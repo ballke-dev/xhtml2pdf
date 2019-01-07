@@ -430,13 +430,20 @@ class PmlImageReader(object):  # TODO We need a factory here, returning either a
         if sys.platform[0:4] == 'java':
             return None
         elif "transparency" in self._image.info:
-            transparency = float(self._image.info["transparency"]) * 3
+            transparency = self._image.info["transparency"] * 3
             palette = self._image.palette
             try:
                 palette = palette.palette
             except:
                 palette = palette.data
-            return map(ord, palette[transparency:transparency + 3])
+
+            # 8-bit PNGs could give an empty string as transparency value, so
+            # we have to be careful here.
+            try:
+                return map(ord, palette[transparency:transparency + 3])
+            except:
+                return None
+
         else:
             return None
 
