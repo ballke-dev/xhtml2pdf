@@ -430,7 +430,7 @@ class PmlImageReader(object):  # TODO We need a factory here, returning either a
         if sys.platform[0:4] == 'java':
             return None
         elif "transparency" in self._image.info:
-            transparency = self._image.info["transparency"] * 3
+            transparency = float(self._image.info["transparency"]) * 3
             palette = self._image.palette
             try:
                 palette = palette.palette
